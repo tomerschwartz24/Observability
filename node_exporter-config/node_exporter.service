@@ -1,0 +1,17 @@
+[Unit]
+Description=Node Exporter
+Documentation=https://prometheus.io/docs/guides/node-exporter/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Type=simple
+Restart=on-failure
+#Add necssary node_exporter collectors to the node_exporter here, for example if you want to collect systemd KPI's, your ExecStart should be /usr/bin/node_exporter --collector.systemd
+ExecStart=/usr/bin/node_exporter \
+  --web.listen-address=:9100
+
+[Install]
+WantedBy=multi-user.target

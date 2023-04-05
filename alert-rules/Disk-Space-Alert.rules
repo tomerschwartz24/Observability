@@ -1,0 +1,19 @@
+groups:
+- name: jenkins
+  rules:
+  - alert: DiskSpaceCritical
+    expr: node_filesystem_free_bytes{instance="<IP_ADDRESS>:NODE_EXPORTER_PORT>", mountpoint="/"} / 1024 / 1024 / 1024 < 30
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Jenkins server / mountpoint is running out of disk space! "
+      description: "Some pipelines might fail if less than X GB is available, Please clear out some space!"
+  - alert: DockerServiceDown
+    expr: node_systemd_unit_state{instance="<IP_ADDRESS>:NODE_EXPORTER_PORT>", name="docker.service", state="active"} < 1
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Docker service on Jenkins server is down!"
+      description: "unavailability of the Docker Engine will affect any pipeline that uses docker to pull & push & build images!"

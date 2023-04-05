@@ -1,0 +1,37 @@
+global:
+  scrape_interval: 15s
+
+
+#Which servers you want to monitor ( Need to install node exporters on them and define necessary collectors when running the node_exporter process)
+scrape_configs:
+- job_name: Jenkins-Server
+  static_configs:
+  - targets: ['<IP_ADDRESS>:9100']
+- job_name: Nexus-Repository-Manager
+  static_configs:
+  - targets: ['<IP_ADDRESS>:9100']
+- job_name: Harbor-Registry
+  static_configs:
+  - targets: ['<IP_ADDRESS>:9100']
+
+- job_name: Gitlab-Runner 
+  static_configs:
+  - targets: ['<IP_ADDRESS>:9100']
+
+- job_name: Samba-Server 
+  static_configs:
+  - targets: ['<IP_ADDRESS>:9100']
+
+#Alert rules file names
+rule_files:
+   - "Disk-Space-Alert.rules"
+#   - "SOME-ALERT-RULE.rules"
+
+
+#Integration to Alertmanager
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+        - 'localhost:9093'
+       
